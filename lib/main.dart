@@ -1,4 +1,5 @@
 import 'package:asd/core/common/themes/app_theme.dart';
+import 'package:asd/features/assessment/presentation/pages/assessment_screen.dart';
 import 'package:asd/features/home/presentation/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,10 +34,10 @@ class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
-      // GoRoute(
-      //   path: '/assessment',
-      //   builder: (context, state) => const AssessmentScreen(),
-      // ),
+      GoRoute(
+        path: '/assessment',
+        builder: (context, state) => const AssessmentScreen(),
+      ),
       // GoRoute(
       //   path: '/assessment/:ageGroup',
       //   builder: (context, state) {

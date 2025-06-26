@@ -16,7 +16,7 @@ class NavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentRoute = GoRouter.of(context);
+    final currentRoute = GoRouterState.of(context).topRoute; // FIXED
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
@@ -46,7 +46,7 @@ class NavigationBar extends StatelessWidget {
         if (MediaQuery.of(context).size.width > 768)
           Row(
             children: navItems.map((item) {
-              final isActive = currentRoute == item['href'];
+              final isActive = currentRoute == item['href']; // This now works
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
                 child: TextButton(

@@ -1,8 +1,13 @@
+import 'package:asd/features/assessment/presentation/pages/assessment_screen.dart';
+import 'package:asd/features/home/presentation/widgets/info_section.dart';
+import 'package:asd/features/home/presentation/widgets/outcome_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
+  static route() => MaterialPageRoute(builder: (context) => const HomeScreen());
   const HomeScreen({super.key});
 
   @override
@@ -42,7 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, AssessmentScreen.route());
+                },
                 child: Text(
                   'Assessments',
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -77,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ListTile(title: Text('Home'), onTap: () => Navigator.pop(context)),
           ListTile(
             title: Text('Assessments'),
-            onTap: () => Navigator.pop(context),
+            onTap: () => Navigator.push(context, AssessmentScreen.route()),
           ),
           ListTile(
             title: Text('Find Doctors'),
@@ -92,59 +99,92 @@ class _HomeScreenState extends State<HomeScreen> {
     return ListView(
       children: [
         InfoSection(
-          title: 'Comprehensive ASD Detection & Support',
+          title: 'Early Detection for Better Outcomes',
           description:
-              'Empowering families with AI-powered autism detection and connecting them with qualified healthcare professionals across Bangladesh.',
-          image: Image.asset(
-            'assets/images/laptop_stethoscope.png',
-            width: 200.w,
+              'Advanced AI-powered autism spectrum disorder detection using validated AQ-10 questionnaires and image analysis. Connect with qualified professionals across Bangladesh.',
+          image: Card(
+            elevation: 6.r,
+            child: Image.asset('assets/images/brain_model.webp', width: 150.w),
           ),
           isWeb: isWeb,
         ),
-        _buildBetterOutcomes(),
+        _buildBetterOutcomes(isWeb),
         InfoSection(
           title: 'Advancing Autism Detection in Bangladesh',
           description:
-              'Our mission is to provide accessible, accurate, and culturally appropriate tools for autism detection in Bangladesh.',
+              "Our mission is to provide accessible, accurate, and culturally appropriate tools for autism detection in Bangladesh.\n\nUsing evidence-based assessment methods and cutting-edge machine learning technology, we help families understand their children's developmental patterns and connect them with qualified healthcare professionals.",
           isWeb: isWeb,
+          image: Card(
+            elevation: 6.r,
+            child: Image.asset('assets/images/desk.jpg', width: 150.w),
+          ),
         ),
         _buildFooter(),
       ],
     );
   }
 
-  Widget _buildBetterOutcomes() {
+  Widget _buildBetterOutcomes(bool isWeb) {
+    final items = [
+      OutcomeItem(
+        value: 'AQ-10 Questionnaires',
+        label:
+            'Age-specific validated questionnaires for toddlers, children, adolescents, and adults with ML-powered analysis',
+        icon: Icons.checklist,
+      ),
+      OutcomeItem(
+        value: 'Image Analysis',
+        label:
+            'Advanced computer vision models analyze behavioral patterns and facial expressions for additional insights.',
+        icon: Icons.camera_alt,
+      ),
+      OutcomeItem(
+        value: 'Expert Consultation',
+        label:
+            'Connect with qualified professionals across all divisions of Bangladesh through video calls and chat.',
+        icon: Icons.people,
+      ),
+    ];
+
     return Container(
       padding: EdgeInsets.all(16.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Better Outcomes',
+            'Comprehensive ASD Detection & Support',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          SizedBox(height: 16.h),
-          Wrap(
-            spacing: 16.w,
-            runSpacing: 16.h,
-            children: [
-              OutcomeItem(
-                value: '98%',
-                label: 'accuracy',
-                icon: Icons.check_circle,
-              ),
-              OutcomeItem(
-                value: '500+',
-                label: 'qualified doctors',
-                icon: Icons.people,
-              ),
-              OutcomeItem(
-                value: 'AI-powered',
-                label: 'detection',
-                icon: Icons.computer,
-              ),
-            ],
+          Gap(10.h),
+          Text(
+            'Our platform combines validated assessment tools with cutting-edge AI technology to provide accurate screening and connect families with professional care.',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
+          SizedBox(height: 16.h),
+          isWeb
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: items
+                      .map(
+                        (item) => Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: item,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                )
+              : Column(
+                  children: items
+                      .map(
+                        (item) => Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          child: item,
+                        ),
+                      )
+                      .toList(),
+                ),
         ],
       ),
     );
@@ -157,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           Text(
-            '© 2024 ASD Detect. All rights reserved.',
+            '© 2025 ASD Detect. All rights reserved.',
             style: TextStyle(color: Colors.white, fontSize: 12.sp),
           ),
           SizedBox(height: 8.h),
@@ -172,90 +212,5 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // Reusable InfoSection Widget
-class InfoSection extends StatelessWidget {
-  final String title;
-  final String description;
-  final Widget? image;
-  final bool isWeb;
-
-  const InfoSection({
-    super.key,
-    required this.title,
-    required this.description,
-    this.image,
-    this.isWeb = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      child: isWeb && image != null
-          ? Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        description,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 16.w),
-                image!,
-              ],
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: Theme.of(context).textTheme.headlineSmall),
-                SizedBox(height: 8.h),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                if (image != null)
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.h),
-                    child: image,
-                  ),
-              ],
-            ),
-    );
-  }
-}
 
 // Reusable OutcomeItem Widget
-class OutcomeItem extends StatelessWidget {
-  final String value;
-  final String label;
-  final IconData icon;
-
-  const OutcomeItem({
-    super.key,
-    required this.value,
-    required this.label,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(icon, size: 48.w, color: Theme.of(context).colorScheme.primary),
-        SizedBox(height: 8.h),
-        Text(value, style: Theme.of(context).textTheme.headlineSmall),
-        Text(label, style: Theme.of(context).textTheme.bodySmall),
-      ],
-    );
-  }
-}
